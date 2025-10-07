@@ -1,0 +1,32 @@
+name: Taller CI & Despliegue a GitHub Pages
+
+on: 
+   push: 
+      branches: [ main ]
+
+jobs: 
+   verificar_codigo:
+      runs-on: ubuntu-latest
+      steps:
+      - name: Checkout del codigo
+        uses: actions/checkout@v4
+        
+      - name: Verificar archivos home.html y styles.css
+        run: |
+         if [ -f home.html ] && [ -f styles.css ]; then
+            echo "Archivos encontrados. Verificación exitosa."
+         else
+            echo "Error: Faltan archivos home.html o styles.css"
+            exit 1
+         fi
+   desplegar_pagina:
+    needs: verificar_codigo
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout del Repositorio
+        uses: actions/checkout@v4
+
+      - name: Simulacion de despliegue
+        run: echo "Artefactos listos para el despliegue en GitHub Pages"
